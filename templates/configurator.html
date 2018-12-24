@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    
+<script>
+"use strict";
+
+function ajaxSuccess () {
+  console.log(this.responseText);
+}
+
+function AJAXSubmit (oFormElement) {
+  if (!oFormElement.action) { return; }
+  var oReq = new XMLHttpRequest();
+  oReq.onload = ajaxSuccess;
+  oReq.open("post", oFormElement.action);
+  oReq.send(new FormData(oFormElement));
+}
+</script>
+    
+    <title>Configurator</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Configurator</h1>
+      <form action="/set_led" method="post" onsubmit="AJAXSubmit(this); return false;">
+        <div class="card">
+          <div class="card-header">
+              Set Now
+          </div>
+          <div class="card-body">
+            <div class="card">
+              <div class="card-header">
+                Color
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputRed">Red</label>
+                    <input type="number" class="form-control" id="inputRed" name="r"  placeholder="rrr"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputHours">Green</label>
+                    <input type="number" class="form-control" id="inputGreen" name="g"  placeholder="ggg"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputDays">Blue</label>
+                    <input type="number" class="form-control" id="inputBlue" name="b"  placeholder="bbb"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputMonths">White</label>
+                    <input type="number" class="form-control" id="inputWhite" name="w"  placeholder="www"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitAlarm">Set Now</button>
+          </div>
+        </div>
+      </form>
+      <form action="/set_alarm" method="post" onsubmit="AJAXSubmit(this); return false;">
+        <div class="card">
+          <div class="card-header">
+              Set Alarm
+          </div>
+          <div class="card-body">
+            <div class="card">
+              <div class="card-header">
+                Time
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputMinutes">Minute</label>
+                    <input type="number" class="form-control" id="inputMinutes" name="min" placeholder="mm"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputHours">Hour</label>
+                    <input type="number" class="form-control" id="inputHours" name="hr" placeholder="hh"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputDays">Day</label>
+                    <input type="number" class="form-control" id="inputDays" name="day" placeholder="DD"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputMonths">Month</label>
+                    <input type="number" class="form-control" id="inputMonths" name="mon" placeholder="MM"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputYears">Year</label>
+                    <input type="number" class="form-control" id="inputYears" name="yr" placeholder="YYYY"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                Color
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputRed">Red</label>
+                    <input type="number" class="form-control" id="inputRed" name="r"  placeholder="rrr"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputHours">Green</label>
+                    <input type="number" class="form-control" id="inputGreen" name="g"  placeholder="ggg"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputDays">Blue</label>
+                    <input type="number" class="form-control" id="inputBlue" name="b"  placeholder="bbb"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputMonths">White</label>
+                    <input type="number" class="form-control" id="inputWhite" name="w"  placeholder="www"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitAlarm">Set Alarm</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
