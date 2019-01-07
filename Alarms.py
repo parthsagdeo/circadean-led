@@ -4,10 +4,10 @@ import datetime
 
 class BaseAlarm(ABC):
     def is_activated(self, cur_datetime):
-        return cur_datetime >= self.get_activation_time()
+        return self.get_last_activation_time(cur_datetime) is not None
 
     @abstractmethod
-    def get_activation_time(self):
+    def get_last_activation_time(self, cur_datetime):
         pass
 
     @abstractmethod
@@ -37,7 +37,7 @@ class OneTimeAlarm(BaseAlarm):
         self.alarm_datetime = alarm_datetime
         self.rgbw = rgbw
 
-    def get_activation_time(self):
+    def get_last_activation_time(self, cur_datetime):
         return self.alarm_datetime
 
     def get_rgbw_at_datetime(self, cur_datetime):
