@@ -21,7 +21,39 @@
       <h1>Simulator</h1>
       <div class="card">
         <div class="card-header">
-            Current LED Status
+            Set Time
+        </div>
+        <div class="card-body">
+          <form action="/get_color_at_datetime" method="post" onsubmit="getColorAtTime(this); return false;">
+            <div class="form-row">
+              <div class="form-group col-sm">
+                <label for="inputMinutes">Minute</label>
+                <input type="number" class="form-control" id="inputMinutes" name="min" placeholder="mm"/>
+              </div>
+              <div class="form-group col-sm">
+                <label for="inputHours">Hour</label>
+                <input type="number" class="form-control" id="inputHours" name="hr" placeholder="hh"/>
+              </div>
+              <div class="form-group col-sm">
+                <label for="inputDays">Day</label>
+                <input type="number" class="form-control" id="inputDays" name="day" placeholder="DD"/>
+              </div>
+              <div class="form-group col-sm">
+                <label for="inputMonths">Month</label>
+                <input type="number" class="form-control" id="inputMonths" name="mon" placeholder="MM"/>
+              </div>
+              <div class="form-group col-sm">
+                <label for="inputYears">Year</label>
+                <input type="number" class="form-control" id="inputYears" name="yr" placeholder="YYYY"/>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitTime">Set Time</button>
+          </form>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+            LED Status
         </div>
         <div class="card-body">
           <div class="row">

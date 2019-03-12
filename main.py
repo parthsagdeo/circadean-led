@@ -17,7 +17,7 @@ def set_alarm():
     f = request.form
     alarm_datetime = datetime.datetime(int(f.get('yr')), int(f.get('mon')), int(f.get('day')),
                                        int(f.get('hr')), int(f.get('min')))
-    color_tuple = (f.get('r'), f.get('g'), f.get('b'), f.get('w'))
+    color_tuple = (int(f.get('r')), int(f.get('g')), int(f.get('b')), int(f.get('w')))
 
     db.set_alarm(Alarms.OneTimeAlarm(alarm_datetime, color_tuple))
 
@@ -27,7 +27,7 @@ def set_alarm():
 @app.route("/set_led", methods=['POST','GET'])
 def set_led():
     f = request.form
-    rgbw_tuple = (f.get('r'), f.get('g'), f.get('b'), f.get('w'))
+    rgbw_tuple = (int(f.get('r')), int(f.get('g')), int(f.get('b')), int(f.get('w')))
 
     db.set_alarm(Alarms.OneTimeAlarm(datetime.datetime.now(), rgbw_tuple))
     return "Success!"

@@ -38,7 +38,7 @@ class OneTimeAlarm(BaseAlarm):
         self.rgbw = rgbw
 
     def get_last_activation_time(self, cur_datetime):
-        return self.alarm_datetime
+        return self.alarm_datetime if self.alarm_datetime <= cur_datetime else None
 
     def get_rgbw_at_datetime(self, cur_datetime):
         if cur_datetime >= self.alarm_datetime:

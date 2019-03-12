@@ -24,10 +24,23 @@ function ajaxSuccess () {
 function AJAXSubmit (oFormElement) {
   if (!oFormElement.action) { return; }
   var oReq = new XMLHttpRequest();
-  oReq.onload = ajaxSuccess;
   oReq.open("post", oFormElement.action);
   oReq.send(new FormData(oFormElement));
 }
+
+function updateAlarmInfo(){
+  var oReq = new XMLHttpRequest();
+  oReq.onload = function () {
+    var responseText = oReq.responseText;
+    var alarm_dict_list = JSON.parse(responseText);
+    document.getElementById("alarmCardBody").innerHTML = responseText;
+  }
+  oReq.open("get", "/get_alarms");
+  oReq.send();
+}
+
+updateAlarmInfo();
+
 </script>
     
     <title>Configurator</title>
@@ -35,7 +48,7 @@ function AJAXSubmit (oFormElement) {
   <body>
     <div class="container">
       <h1>Configurator</h1>
-      <form action="/set_led" method="post" onsubmit="AJAXSubmit(this); return false;">
+      <form action="/set_led" method="post" onsubmit="AJAXSubmit(this); updateAlarmInfo(); return false;">
         <div class="card">
           <div class="card-header">
               Set Now
@@ -70,7 +83,7 @@ function AJAXSubmit (oFormElement) {
           </div>
         </div>
       </form>
-      <form action="/set_alarm" method="post" onsubmit="AJAXSubmit(this); return false;">
+      <form action="/set_alarm" method="post" onsubmit="AJAXSubmit(this); updateAlarmInfo(); return false;">
         <div class="card">
           <div class="card-header">
               Set Alarm
@@ -134,6 +147,12 @@ function AJAXSubmit (oFormElement) {
           </div>
         </div>
       </form>
+      <div class="card">
+        <div class="card-header">
+          Existing Alarms
+        </div>
+        <div class="card-body" id="alarmCardBody">
+        </div>
     </div>
   </body>
 </html>

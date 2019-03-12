@@ -4,6 +4,7 @@ import Alarms
 
 DATABASE_FILE = 'control.db'
 
+
 def create_connection():
     """ create a database connection to the SQLite database
         specified by the db_file
@@ -34,7 +35,6 @@ def table_exists(conn, name):
     cur = conn.cursor()
     cur.execute(sql)
     result = cur.fetchone()
-    print(result)
     return result != (0,)
 
 
