@@ -28,18 +28,18 @@ function AJAXSubmit (oFormElement) {
   oReq.send(new FormData(oFormElement));
 }
 
-function updateAlarmInfo(){
+function updateRuleInfo(){
   var oReq = new XMLHttpRequest();
   oReq.onload = function () {
     var responseText = oReq.responseText;
-    var alarm_dict_list = JSON.parse(responseText);
-    document.getElementById("alarmCardBody").innerHTML = responseText;
+    var rule_dict_list = JSON.parse(responseText);
+    document.getElementById("ruleCardBody").innerHTML = responseText;
   }
-  oReq.open("get", "/get_alarms");
+  oReq.open("get", "/get_rules");
   oReq.send();
 }
 
-updateAlarmInfo();
+updateRuleInfo();
 
 </script>
     
@@ -48,7 +48,7 @@ updateAlarmInfo();
   <body>
     <div class="container">
       <h1>Configurator</h1>
-      <form action="/set_led" method="post" onsubmit="AJAXSubmit(this); updateAlarmInfo(); return false;">
+      <form action="/set_led" method="post" onsubmit="AJAXSubmit(this); updateRuleInfo(); return false;">
         <div class="card">
           <div class="card-header">
               Set Now
@@ -79,14 +79,15 @@ updateAlarmInfo();
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="submitAlarm">Set Now</button>
+            <button type="submit" class="btn btn-primary" id="submitRule">Set Now</button>
           </div>
         </div>
       </form>
-      <form action="/set_alarm" method="post" onsubmit="AJAXSubmit(this); updateAlarmInfo(); return false;">
+      <br>
+      <form action="/set_onetime_rule" method="post" onsubmit="AJAXSubmit(this); updateRuleInfo(); return false;">
         <div class="card">
           <div class="card-header">
-              Set Alarm
+              Set One-Time Rule
           </div>
           <div class="card-body">
             <div class="card">
@@ -96,28 +97,29 @@ updateAlarmInfo();
               <div class="card-body">
                 <div class="form-row">
                   <div class="form-group col-sm">
-                    <label for="inputMinutes">Minute</label>
-                    <input type="number" class="form-control" id="inputMinutes" name="min" placeholder="mm"/>
-                  </div>
-                  <div class="form-group col-sm">
-                    <label for="inputHours">Hour</label>
-                    <input type="number" class="form-control" id="inputHours" name="hr" placeholder="hh"/>
-                  </div>
-                  <div class="form-group col-sm">
-                    <label for="inputDays">Day</label>
-                    <input type="number" class="form-control" id="inputDays" name="day" placeholder="DD"/>
+                    <label for="inputYears">Year</label>
+                    <input type="number" class="form-control" id="inputYears" name="yr" placeholder="YYYY"/>
                   </div>
                   <div class="form-group col-sm">
                     <label for="inputMonths">Month</label>
                     <input type="number" class="form-control" id="inputMonths" name="mon" placeholder="MM"/>
                   </div>
                   <div class="form-group col-sm">
-                    <label for="inputYears">Year</label>
-                    <input type="number" class="form-control" id="inputYears" name="yr" placeholder="YYYY"/>
+                    <label for="inputDays">Day</label>
+                    <input type="number" class="form-control" id="inputDays" name="day" placeholder="DD"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputHours">Hour</label>
+                    <input type="number" class="form-control" id="inputHours" name="hr" placeholder="hh"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputMinutes">Minute</label>
+                    <input type="number" class="form-control" id="inputMinutes" name="min" placeholder="mm"/>
                   </div>
                 </div>
               </div>
             </div>
+            <br>
             <div class="card">
               <div class="card-header">
                 Color
@@ -129,29 +131,129 @@ updateAlarmInfo();
                     <input type="number" class="form-control" id="inputRed" name="r"  placeholder="rrr"/>
                   </div>
                   <div class="form-group col-sm">
-                    <label for="inputHours">Green</label>
+                    <label for="inputGreen">Green</label>
                     <input type="number" class="form-control" id="inputGreen" name="g"  placeholder="ggg"/>
                   </div>
                   <div class="form-group col-sm">
-                    <label for="inputDays">Blue</label>
+                    <label for="inputBlue">Blue</label>
                     <input type="number" class="form-control" id="inputBlue" name="b"  placeholder="bbb"/>
                   </div>
                   <div class="form-group col-sm">
-                    <label for="inputMonths">White</label>
+                    <label for="inputWhite">White</label>
                     <input type="number" class="form-control" id="inputWhite" name="w"  placeholder="www"/>
                   </div>
                 </div>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" id="submitAlarm">Set Alarm</button>
+            <button type="submit" class="btn btn-primary" id="submitOnetimeRule">Set Rule</button>
           </div>
         </div>
       </form>
+      <br>
+      <form action="/set_gradient_rule" method="post" onsubmit="AJAXSubmit(this); updateRuleInfo(); return false;">
+        <div class="card">
+          <div class="card-header">
+              Set Gradient Rule
+          </div>
+          <div class="card-body">
+            <div class="card">
+              <div class="card-header">
+                Start Time
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputStartYear">Year</label>
+                    <input type="number" class="form-control" id="inputStartYear" name="start_yr" placeholder="YYYY"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputStartMonth">Month</label>
+                    <input type="number" class="form-control" id="inputStartMonth" name="start_mon" placeholder="MM"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputStartDay">Day</label>
+                    <input type="number" class="form-control" id="inputStartDay" name="start_day" placeholder="DD"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputStartHour">Hour</label>
+                    <input type="number" class="form-control" id="inputStartHour" name="start_hr" placeholder="hh"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputStartMinute">Minute</label>
+                    <input type="number" class="form-control" id="inputStartMinute" name="start_min" placeholder="mm"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                End Time
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputEndYear">Year</label>
+                    <input type="number" class="form-control" id="inputEndYear" name="end_yr" placeholder="YYYY"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputEndMonth">Month</label>
+                    <input type="number" class="form-control" id="inputEndMonth" name="end_mon" placeholder="MM"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputEndDay">Day</label>
+                    <input type="number" class="form-control" id="inputEndDay" name="end_day" placeholder="DD"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputEndHour">Hour</label>
+                    <input type="number" class="form-control" id="inputEndHour" name="end_hr" placeholder="hh"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputEndMinute">Minute</label>
+                    <input type="number" class="form-control" id="inputEndMinute" name="end_min" placeholder="mm"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br>
+            <div class="card">
+              <div class="card-header">
+                Color and Brightness
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputStartTemp">Start Temperature</label>
+                    <input type="number" class="form-control" id="inputStartTemp" name="start_temp"  placeholder="color temp"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputStartBrightness">Start Brightness</label>
+                    <input type="number" class="form-control" id="inputStartBrightness" name="start_brightness"  placeholder="brightness"/>
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-sm">
+                    <label for="inputEndTemp">End Temperature</label>
+                    <input type="number" class="form-control" id="inputEndTemp" name="end_temp"  placeholder="color temp"/>
+                  </div>
+                  <div class="form-group col-sm">
+                    <label for="inputEndBrightness">End Brightness</label>
+                    <input type="number" class="form-control" id="inputEndBrightness" name="end_brightness"  placeholder="brightness"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitGradientRule">Set Rule</button>
+          </div>
+        </div>
+      </form>
+      <br>
       <div class="card">
         <div class="card-header">
-          Existing Alarms
+          Existing Rules
         </div>
-        <div class="card-body" id="alarmCardBody">
+        <div class="card-body" id="ruleCardBody">
         </div>
     </div>
   </body>

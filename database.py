@@ -1,6 +1,6 @@
 import sqlite3
 import json
-import Alarms
+import Rules
 
 DATABASE_FILE = 'control.db'
 
@@ -19,11 +19,11 @@ def create_connection():
     return None
 
 
-def create_alarms_table(conn):
+def create_rules_table(conn):
     sql = """
-        CREATE TABLE alarms (
+        CREATE TABLE rules (
             id integer PRIMARY KEY,
-            alarm_data text NOT NULL           
+            rule_data text NOT NULL           
         )"""
     cur = conn.cursor()
     cur.execute(sql)
@@ -38,9 +38,9 @@ def table_exists(conn, name):
     return result != (0,)
 
 
-def add_row_to_alarms_table(conn, alarm_data):
-    data_json = json.dumps(alarm_data)
-    sql = """INSERT INTO alarms (alarm_data) VALUES (?)"""
+def add_row_to_rules_table(conn, rule_data):
+    data_json = json.dumps(rule_data)
+    sql = """INSERT INTO rules (rule_data) VALUES (?)"""
     cur = conn.cursor()
     cur.execute(sql, (data_json, ))
     conn.commit()
@@ -53,36 +53,36 @@ def print_table(conn, name):
     print(cur.fetchall())
 
 
-def get_rows_from_alarms_table(conn):
-    sql = "SELECT alarm_data FROM alarms"
+def get_rows_from_rules_table(conn):
+    sql = "SELECT rule_data FROM rules"
     cur = conn.cursor()
     cur.execute(sql)
-    alarm_records = cur.fetchall()
+    rule_records = cur.fetchall()
 
     # Convert a list of tuples (each containing a JSON string representing a dict) into a list of dicts
-    alarm_dicts = map(lambda result_tuple: json.loads(result_tuple[0]), alarm_records)
+    rule_dicts = list(map(lambda result_tuple: json.loads(result_tuple[0]), rule_records))
 
     # Return the list of dicts
-    return alarm_dicts
+    return rule_dicts
 
 
-def set_alarm(alarm):
+def set_rule(rule):
     conn = create_connection()
     with conn:
-        if not table_exists(conn, 'alarms'):
-            create_alarms_table(conn)
+        if not table_exists(conn, 'rules'):
+            create_rules_table(conn)
 
-        add_row_to_alarms_table(conn, alarm.get_dict())
+        add_row_to_rules_table(conn, rule.get_dict())
 
-        print_table(conn, 'alarms')
+        print_table(conn, 'rules')
 
 
-def get_alarms():
+def get_rules():
     conn = create_connection()
     with conn:
-        if not table_exists(conn, 'alarms'):
+        if not table_exists(conn, 'rules'):
             return None
 
-        alarm_dicts = get_rows_from_alarms_table(conn)
+        rule_dicts = get_rows_from_rules_table(conn)
 
-        return list(map(Alarms.BaseAlarm.get_alarm_from_dict, alarm_dicts))
+        return list(map(Rules.BaseRule.get_rule_from_dict, rule_dicts))
