@@ -13,6 +13,10 @@ def create_connection():
     """
     try:
         conn = sqlite3.connect(DATABASE_FILE)
+
+        if not table_exists(conn, 'rules'):
+            create_rules_table(conn)
+
         return conn
     except sqlite3.Error as e:
         print(e)
@@ -80,9 +84,6 @@ def set_rule(rule):
 def get_rules():
     conn = create_connection()
     with conn:
-        if not table_exists(conn, 'rules'):
-            return None
-
         rule_dicts = get_rows_from_rules_table(conn)
 
         return list(map(Rules.BaseRule.get_rule_from_dict, rule_dicts))
