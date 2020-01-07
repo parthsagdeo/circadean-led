@@ -1,55 +1,42 @@
 # External module imports
-import RPi.GPIO as GPIO
+import pigpio
 import controller
 import datetime
 import time
 from signal import signal, SIGINT
 from sys import exit
+import numpy
 
 FREQ = 100
-R_PIN_NUM = 3
-B_PIN_NUM = 5
-G_PIN_NUM = 7
-W_PIN_NUM = 8
+R_PIN_NUM = 2
+B_PIN_NUM = 3
+G_PIN_NUM = 4
+W_PIN_NUM = 14
+
 
 def main():
-    print("Initializing LEDs")
-
-    # Pin setup:
-    GPIO.setmode(GPIO.BOARD)  # Use numbering scheme for physical pins on board, not GPIO labels
-
-    r_led = init_led(R_PIN_NUM)
-    g_led = init_led(G_PIN_NUM)
-    b_led = init_led(B_PIN_NUM)
-    w_led = init_led(W_PIN_NUM)
+    # connect to local Pi
+    pi = pigpio.pi()
 
     # Tell Python to run the cleanup() function when SIGINT (CTRL+c) is recieved
-    signal(SIGINT, lambda s, f: cleanup(s, f, [r_led, g_led, b_led, w_led]))
+    signal(SIGINT, lambda s, f: cleanup(s, f, pi))
 
     # Set brightness for each LED color:
     while True:
         rgbw = controller.get_color_at_datetime(datetime.datetime.now())
+        (R, G, B, W) = numpy.multiply(rgbw, 2.55)
 
-        r_led.ChangeDutyCycle(float(rgbw[0]) / 2.55)
-        g_led.ChangeDutyCycle(float(rgbw[1]) / 2.55)
-        b_led.ChangeDutyCycle(float(rgbw[2]) / 2.55)
-        w_led.ChangeDutyCycle(float(rgbw[3]) / 2.55)
-        time.sleep(60)
+        pi.set_PWM_dutycycle(R_PIN_NUM, R)
+        pi.set_PWM_dutycycle(G_PIN_NUM, G)
+        pi.set_PWM_dutycycle(B_PIN_NUM, B)
+        pi.set_PWM_dutycycle(W_PIN_NUM, W)
 
-
-def init_led(ledPin):
-    GPIO.setup(ledPin, GPIO.OUT)
-    p = GPIO.PWM(ledPin, FREQ)
-    p.start(0)
-    return p
+        time.sleep(5)
 
 
-def cleanup(signal_received, frame, pins):
+def cleanup(signal_received, frame, pi):
     print('SIGINT or CTRL-C detected. Exiting gracefully')
-    for p in pins:
-        p.stop()
-
-    GPIO.cleanup()
+    pi.stop()
     exit(0)
 
 
